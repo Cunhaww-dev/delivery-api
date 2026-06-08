@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "rootDir": "./src",
+    // "rootDir": "./src", Comentado para permitir que o Prisma gere arquivos fora da pasta src
     "outDir": "./dist",
     "module": "esnext",
     "moduleResolution": "bundler",
@@ -17,5 +17,5 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src"]
+  "include": ["src", "prisma.config.ts"]
 }
