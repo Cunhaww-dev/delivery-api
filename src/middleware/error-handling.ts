@@ -1,5 +1,5 @@
 import { AppError } from '@/utils/AppError';
-import { Request, Response, NextFunction, response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
 
 export function errorHandling(
@@ -26,5 +26,5 @@ export function errorHandling(
     });
   }
 
-  return response.status(500).json({ message: 'Internal server error' });
+  return res.status(500).json({ message: 'Internal server error' });
 }

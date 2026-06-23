@@ -1,0 +1,33 @@
+import { prisma } from '@/database/prisma';
+import { AppError } from '@/utils/AppError';
+import { compare } from 'bcrypt';
+import { Request, Response } from 'express';
+import z from 'zod';
+
+export class SessionsController {
+  async create(req: Request, res: Response) {
+    const bodySchema = z.object({
+      email: z.email(),
+      password: z.string().min(6),
+    });
+
+    const { email, password } = bodySchema.parse(req.body);
+
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!user) {
+      throw new AppError('Email or password is invalid', 401);
+    }
+
+    const passMatched = await compare(password, user.password);
+
+    // Verifica senha na database
+    if (!passMatched) {
+      throw new AppError('Email or password is invalid', 401);
+    }
+
+    return res.json({ message: 'Session created' });
+  }
+}
