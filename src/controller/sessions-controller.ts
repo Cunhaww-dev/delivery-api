@@ -1,6 +1,8 @@
+import { authConfig } from '@/config/auth';
 import { prisma } from '@/database/prisma';
 import { AppError } from '@/utils/AppError';
 import { compare } from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import z from 'zod';
 
@@ -28,6 +30,18 @@ export class SessionsController {
       throw new AppError('Email or password is invalid', 401);
     }
 
-    return res.json({ message: 'Session created' });
+    // Testando token
+    const token = jwt.sign({}, authConfig.jwt.secret!, {
+      subject: String(user.id),
+      expiresIn: authConfig.jwt.expiresIn,
+    });
+
+    const { password: hashedPass, ...userWithoutPassword } = user;
+
+    return res.json({
+      message: 'User Session created',
+      user: userWithoutPassword,
+      token,
+    });
   }
 }
