@@ -31,7 +31,7 @@ export class SessionsController {
     }
 
     // Testando token
-    const token = jwt.sign({}, authConfig.jwt.secret!, {
+    const token = jwt.sign({ role: user.Role }, authConfig.jwt.secret!, {
       subject: String(user.id),
       expiresIn: authConfig.jwt.expiresIn,
     });
